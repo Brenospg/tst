@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transição de Imagem</title>
+    <style>
+        .container {
+            position: relative;
+            width: 400px;
+            height: 200px;
+        }
+
+        .image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .bar {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="image" src="https://ibb.co/CwCh03r" alt="Imagem 1">
+        <img class="image" src="https://ibb.co/V9gvxmh" alt="Imagem 2">
+        <div class="bar" id="bar"></div>
+    </div>
+
+    <script>
+        const bar = document.getElementById('bar');
+        const images = document.querySelectorAll('.image');
+        let isDragging = false;
+
+        bar.addEventListener('mousedown', (e) => {
+            isDragging = true;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            const xPos = e.clientX - containerRect.left;
+            const percent = (xPos / containerRect.width) * 100;
+
+            bar.style.left = percent + '%';
+            images[0].style.transform = `translateX(${percent - 100}%)`;
+            images[1].style.transform = `translateX(${percent - 100}%)`;
+        });
+    </script>
+</body>
+</html>
